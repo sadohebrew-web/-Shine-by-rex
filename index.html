@@ -101,12 +101,16 @@
         html {
             scroll-behavior: smooth;
             font-size: 16px;
+            overflow-x: hidden;
+            max-width: 100%;
         }
 
         body {
             background-color: var(--pink-soft);
             color: var(--dark-plum);
             transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+            max-width: 100%;
             font-family: var(--font-body);
             line-height: 1.6;
             overflow-x: hidden;
@@ -258,10 +262,19 @@
         }
 
         .nav-container {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            justify-content: space-between;
+            column-gap: 16px;
             height: 84px;
+        }
+
+        .nav-container .brand-logo {
+            justify-self: start;
+        }
+
+        .nav-container .nav-actions {
+            justify-self: end;
         }
 
         .brand-logo {
@@ -323,19 +336,54 @@
         }
 
         /* ==========================================================================
-           2b. MOBILE NAVIGATION DROPDOWN
+           2b. MOBILE NAVIGATION — LEFT-SIDE SLIDE-OUT DRAWER
            ========================================================================== */
         .mobile-toggle {
             display: none;
         }
 
+        .mobile-nav-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(35, 11, 20, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2099;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-nav-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         .mobile-nav-panel {
-            display: none;
-            max-height: 0;
-            overflow: hidden;
-            background: var(--pink-soft);
-            border-top: 1px solid transparent;
-            transition: max-height 0.35s ease, border-color 0.35s ease;
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 84%;
+            max-width: 320px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: var(--shadow-lg);
+            z-index: 2100;
+            transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .mobile-nav-panel.open {
+            left: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
         }
 
         .mobile-nav-panel .nav-links {
@@ -343,23 +391,18 @@
             flex-direction: column;
             gap: 4px;
             list-style: none;
-            padding: 12px 24px 20px;
         }
 
         .mobile-nav-panel .nav-link {
             display: block;
-            padding: 12px 16px;
+            padding: 14px 16px;
             border-radius: var(--radius-md);
+            font-size: 1rem;
         }
 
         .mobile-nav-panel .nav-link:hover, .mobile-nav-panel .nav-link.active {
             color: var(--pink-vibrant);
             background: var(--pink-surface);
-        }
-
-        .mobile-nav-panel.open {
-            max-height: 400px;
-            border-top-color: var(--line-color);
         }
 
         .nav-actions {
@@ -1804,9 +1847,6 @@
             .mobile-toggle {
                 display: flex;
             }
-            .mobile-nav-panel {
-                display: block;
-            }
             .about-grid {
                 grid-template-columns: 1fr;
                 gap: 40px;
@@ -1873,7 +1913,7 @@
                     <li><a class="nav-link" onclick="switchPage('accessories')">Accessories</a></li>
                     <li><a class="nav-link" onclick="switchPage('lashes')">Lashes</a></li>
                     <li><a class="nav-link" onclick="switchPage('about')">About</a></li>
-                    <li><a class="nav-link" onclick="openBookingModal()">Book Appointment</a></li>
+                    <li><a class="nav-link" onclick="openBookingModal()">Contact</a></li>
                 </ul>
             </nav>
 
@@ -1900,14 +1940,24 @@
             </div>
         </div>
 
-        <!-- MOBILE NAVIGATION DROPDOWN -->
+        <!-- LEFT-SIDE MOBILE NAVIGATION DRAWER -->
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
         <div class="mobile-nav-panel" id="mobileNavPanel">
+            <div class="mobile-nav-header">
+                <a onclick="switchPage('home')" class="brand-logo" style="font-size: 1.25rem;">
+                    <i data-lucide="crown" style="color: var(--pink-vibrant);"></i>
+                    SHINE BY REX<span>.</span>
+                </a>
+                <button class="icon-btn" id="mobileNavClose" aria-label="Close menu">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
             <ul class="nav-links">
                 <li><a class="nav-link" onclick="switchPage('home')">Home</a></li>
                 <li><a class="nav-link" onclick="switchPage('accessories')">Accessories</a></li>
                 <li><a class="nav-link" onclick="switchPage('lashes')">Lashes</a></li>
                 <li><a class="nav-link" onclick="switchPage('about')">About</a></li>
-                <li><a class="nav-link" onclick="openBookingModal()">Book Appointment</a></li>
+                <li><a class="nav-link" onclick="openBookingModal()">Contact</a></li>
             </ul>
         </div>
     </header>
@@ -2070,6 +2120,10 @@
                 <button class="tab-btn active" onclick="filterAccessories('all')">All Accessories</button>
                 <button class="tab-btn" onclick="filterAccessories('bags')">Bags &amp; Pouches</button>
                 <button class="tab-btn" onclick="filterAccessories('cases')">Glam Cases</button>
+                <button class="tab-btn" onclick="filterAccessories('hair')">Hair Accessories</button>
+                <button class="tab-btn" onclick="filterAccessories('jewelry')">Jewelry</button>
+                <button class="tab-btn" onclick="filterAccessories('home')">Home &amp; Decor</button>
+                <button class="tab-btn" onclick="filterAccessories('beauty')">Beauty</button>
             </div>
 
             <div class="product-grid" id="accessoryGrid"></div>
@@ -2579,6 +2633,96 @@
                 rating: "5.0 (95 reviews)",
                 tag: "Honey Infused",
                 desc: "Miracle honey-infused lip oil gloss for silky smooth, glowing lips."
+            },
+            {
+                name: "Classic tote bag",
+                category: "bags",
+                price: 32,
+                img: "images/classic-tote-bag.jpg",
+                rating: "4.9 (58 reviews)",
+                tag: "Everyday Carry",
+                desc: "Spacious butterfly-print tote bag, perfect for everyday errands and travel."
+            },
+            {
+                name: "hair tie",
+                category: "hair",
+                price: 8,
+                img: "images/hair-tie.jpg",
+                rating: "4.8 (140 reviews)",
+                tag: "Gentle Hold",
+                desc: "Soft seamless hair ties in a rainbow of shades — no snag, no crease."
+            },
+            {
+                name: "daisy pillow",
+                category: "home",
+                price: 20,
+                img: "images/daisy-pillow.jpg",
+                rating: "4.9 (44 reviews)",
+                tag: "Room Decor",
+                desc: "Plush daisy-shaped throw pillow to add a soft, girly touch to any space."
+            },
+            {
+                name: "Faux flower",
+                category: "home",
+                price: 16,
+                img: "images/faux-flower.jpg",
+                rating: "4.8 (36 reviews)",
+                tag: "Everlasting Bloom",
+                desc: "Lifelike faux floral stems that bring effortless charm to any vanity or shelf."
+            },
+            {
+                name: "mini led light",
+                category: "home",
+                price: 14,
+                img: "images/mini-led-light.jpg",
+                rating: "4.7 (29 reviews)",
+                tag: "Portable Glow",
+                desc: "Compact rechargeable LED work light with clip and magnetic base."
+            },
+            {
+                name: "3 tier trolley",
+                category: "home",
+                price: 45,
+                img: "images/3-tier-trolley.jpg",
+                rating: "4.9 (33 reviews)",
+                tag: "Room Organizer",
+                desc: "Rolling 3-tier storage trolley to keep your beauty essentials neatly organized."
+            },
+            {
+                name: "classic boy bag",
+                category: "bags",
+                price: 30,
+                img: "images/classic-boy-bag.jpg",
+                rating: "4.8 (47 reviews)",
+                tag: "Floral Print",
+                desc: "Structured floral-print tote with sturdy handles for a polished everyday look."
+            },
+            {
+                name: "claw clip",
+                category: "hair",
+                price: 10,
+                img: "images/claw-clip.jpg",
+                rating: "5.0 (61 reviews)",
+                tag: "Sweet & Girly",
+                desc: "Peach-charm claw clips that secure a sleek updo with a playful sweet touch."
+            },
+            {
+                name: "charm",
+                category: "jewelry",
+                price: 18,
+                img: "images/charm.jpg",
+                rating: "4.9 (52 reviews)",
+                tag: "Beaded Charm",
+                desc: "Handmade beaded charm bracelet with bow and heart accents, one of a kind."
+            },
+            {
+                name: "hand cream",
+                category: "beauty",
+                price: 9,
+                img: "images/hand-cream.jpg",
+                rating: "4.8 (67 reviews)",
+                tag: "Honey Smooth",
+                desc: "Lightweight honey-infused hand cream that absorbs fast for silky soft hands."
             }
         ];
 
@@ -3021,17 +3165,21 @@
             try { localStorage.setItem('shineByRexTheme', next); } catch (e) {}
         });
 
-        // MOBILE NAVIGATION DROPDOWN
+        // MOBILE NAVIGATION — LEFT-SIDE SLIDE-OUT DRAWER
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileNavPanel = document.getElementById('mobileNavPanel');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavClose = document.getElementById('mobileNavClose');
         const mobileIconMenu = document.getElementById('mobileIconMenu');
         const mobileIconClose = document.getElementById('mobileIconClose');
 
         function setMobileNavOpen(open) {
             mobileNavPanel.classList.toggle('open', open);
+            mobileNavOverlay.classList.toggle('open', open);
             mobileMenuBtn.setAttribute('aria-expanded', String(open));
             mobileIconMenu.style.display = open ? 'none' : 'block';
             mobileIconClose.style.display = open ? 'block' : 'none';
+            document.body.style.overflow = open ? 'hidden' : '';
         }
 
         mobileMenuBtn.addEventListener('click', (e) => {
@@ -3039,14 +3187,11 @@
             setMobileNavOpen(!mobileNavPanel.classList.contains('open'));
         });
 
+        mobileNavClose.addEventListener('click', () => setMobileNavOpen(false));
+        mobileNavOverlay.addEventListener('click', () => setMobileNavOpen(false));
+
         document.querySelectorAll('#mobileNavPanel .nav-link').forEach((link) => {
             link.addEventListener('click', () => setMobileNavOpen(false));
-        });
-
-        document.addEventListener('click', (e) => {
-            if (mobileNavPanel.classList.contains('open') && !mobileNavPanel.contains(e.target) && e.target !== mobileMenuBtn && !mobileMenuBtn.contains(e.target)) {
-                setMobileNavOpen(false);
-            }
         });
 
         document.addEventListener('keydown', (e) => {
