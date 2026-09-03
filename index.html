@@ -1497,6 +1497,7 @@
             width: 100%;
             max-width: 400px;
             height: 100vh;
+            height: 100dvh;
             background: var(--white);
             box-shadow: var(--shadow-lg);
             z-index: 2000;
@@ -1508,6 +1509,17 @@
 
         .cart-drawer.open {
             right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .cart-drawer {
+                top: 4vh;
+                top: 4dvh;
+                height: 92vh;
+                height: 92dvh;
+                border-radius: 20px 0 0 20px;
+                padding: 18px;
+            }
         }
 
         .drawer-overlay {
@@ -2831,7 +2843,7 @@
             <h3 style="font-size: 1.25rem;">Your Bag (<span id="cartDrawerCount">0</span>)</h3>
             <button class="icon-btn" id="cartClose" onclick="closeCart()"><i data-lucide="x"></i></button>
         </div>
-        <div id="cartItemsList" style="flex-grow: 1; overflow-y: auto;">
+        <div id="cartItemsList" style="flex-grow: 1; overflow-y: auto; min-height: 0;">
             <p style="text-align: center; color: var(--plum-muted); margin-top: 40px;">Your bag is empty.</p>
         </div>
         
@@ -2858,7 +2870,7 @@
             <h3 style="font-size: 1.25rem;">Your Favourites (<span id="wishlistDrawerCount">0</span>)</h3>
             <button class="icon-btn" id="wishlistClose" onclick="closeWishlist()"><i data-lucide="x"></i></button>
         </div>
-        <div id="wishlistItemsList" style="flex-grow: 1; overflow-y: auto;">
+        <div id="wishlistItemsList" style="flex-grow: 1; overflow-y: auto; min-height: 0;">
             <p style="text-align: center; color: var(--plum-muted); margin-top: 40px;">No favourites yet — tap the heart on any product to save it here.</p>
         </div>
     </div>
