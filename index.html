@@ -270,9 +270,52 @@
             height: 84px;
         }
 
+        .brand-logo {
+            font-family: var(--font-heading);
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--dark-plum);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0;
+            cursor: pointer;
+            min-width: 0;
+        }
+
+        .brand-logo-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            color: var(--pink-vibrant);
+        }
+
+        .brand-logo-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+
+        .brand-logo-dot {
+            color: var(--pink-vibrant);
+        }
+
+        .brand-logo-footer {
+            color: var(--white);
+        }
+
+        /* Fluid sizing so "SHINE BY REX." always fits the header's center column
+           on any screen width without wrapping or overflowing */
         .nav-container .brand-logo {
             grid-area: logo;
             justify-self: start;
+            font-size: clamp(1.05rem, 0.7rem + 2.4vw, 1.7rem);
+            max-width: 100%;
+        }
+
+        .mobile-nav-header .brand-logo {
+            font-size: 1.3rem;
         }
 
         .nav-container .main-nav {
@@ -286,22 +329,6 @@
 
         .nav-container .mobile-toggle {
             display: none;
-        }
-
-        .brand-logo {
-            font-family: var(--font-heading);
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: var(--dark-plum);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: 0;
-            cursor: pointer;
-        }
-
-        .brand-logo span {
-            color: var(--pink-vibrant);
         }
 
         .main-nav .nav-links {
@@ -477,19 +504,21 @@
             position: absolute;
             inset: 0;
             z-index: 0;
+            background: linear-gradient(135deg, var(--dark-plum) 0%, var(--pink-deep) 55%, var(--pink-vibrant) 100%);
         }
 
-        .hero-bg-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 22%;
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 45%),
+                               radial-gradient(circle at 85% 80%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
         }
 
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(100deg, rgba(20, 6, 12, 0.86) 0%, rgba(20, 6, 12, 0.62) 42%, rgba(20, 6, 12, 0.28) 72%, rgba(20, 6, 12, 0.05) 100%);
+            background: linear-gradient(100deg, rgba(20, 6, 12, 0.55) 0%, rgba(20, 6, 12, 0.32) 42%, rgba(20, 6, 12, 0.12) 72%, rgba(20, 6, 12, 0) 100%);
         }
 
         .hero-inner {
@@ -507,6 +536,10 @@
             border-color: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Hero Name/Title - Preserved original 'Syne' font */
@@ -1865,15 +1898,22 @@
             .nav-container {
                 grid-template-columns: auto 1fr auto;
                 grid-template-areas: "toggle logo actions";
+                column-gap: 8px;
             }
             .nav-container .brand-logo {
                 justify-self: center;
-                font-size: 1.3rem;
             }
             .nav-container .mobile-toggle {
                 grid-area: toggle;
                 justify-self: start;
                 display: flex;
+            }
+            .nav-actions {
+                gap: 6px;
+            }
+            .icon-btn {
+                width: 38px;
+                height: 38px;
             }
             .main-nav {
                 display: none;
@@ -1883,7 +1923,9 @@
                 gap: 40px;
             }
             .hero-content h1 {
-                font-size: 2.8rem;
+                font-size: clamp(2rem, 10vw, 2.8rem);
+                letter-spacing: -0.01em;
+                margin: 16px 0 18px;
             }
             .hero {
                 min-height: unset;
@@ -1971,6 +2013,23 @@
             .product-grid {
                 grid-template-columns: 1fr;
             }
+            .nav-header .container {
+                padding: 0 12px;
+            }
+            .nav-container {
+                column-gap: 4px;
+            }
+            .nav-actions {
+                gap: 4px;
+            }
+            .icon-btn {
+                width: 34px;
+                height: 34px;
+            }
+            .brand-logo-icon {
+                width: 18px;
+                height: 18px;
+            }
         }
     </style>
 </head>
@@ -2001,8 +2060,8 @@
             </button>
 
             <a onclick="switchPage('home')" class="brand-logo">
-                <i data-lucide="crown" style="color: var(--pink-vibrant);"></i>
-                SHINE BY REX<span>.</span>
+                <i data-lucide="crown" class="brand-logo-icon"></i>
+                <span class="brand-logo-text">SHINE BY REX<span class="brand-logo-dot">.</span></span>
             </a>
 
             <nav class="main-nav">
@@ -2038,9 +2097,9 @@
         <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
         <div class="mobile-nav-panel" id="mobileNavPanel">
             <div class="mobile-nav-header">
-                <a onclick="switchPage('home')" class="brand-logo" style="font-size: 1.25rem;">
-                    <i data-lucide="crown" style="color: var(--pink-vibrant);"></i>
-                    SHINE BY REX<span>.</span>
+                <a onclick="switchPage('home')" class="brand-logo">
+                    <i data-lucide="crown" class="brand-logo-icon"></i>
+                    <span class="brand-logo-text">SHINE BY REX<span class="brand-logo-dot">.</span></span>
                 </a>
                 <button class="icon-btn" id="mobileNavClose" aria-label="Close menu">
                     <i data-lucide="x"></i>
@@ -2081,7 +2140,6 @@
     <div class="page-section active-page" id="home-view">
         <section class="hero" id="home">
             <div class="hero-bg">
-                <img src="https://images.unsplash.com/photo-1583001809873-a1284a5da67c?auto=format&fit=crop&w=1600&q=80" alt="Shine By Rex Lash Model Glam" class="hero-bg-img">
                 <div class="hero-overlay"></div>
             </div>
 
@@ -2667,9 +2725,9 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a onclick="switchPage('home')" class="brand-logo" style="color: var(--white);">
-                        <i data-lucide="crown" style="color: var(--pink-vibrant);"></i>
-                        SHINE BY REX<span>.</span>
+                    <a onclick="switchPage('home')" class="brand-logo brand-logo-footer">
+                        <i data-lucide="crown" class="brand-logo-icon"></i>
+                        <span class="brand-logo-text">SHINE BY REX<span class="brand-logo-dot">.</span></span>
                     </a>
                     <p>Your ultimate destination for luxury handcrafted lashes, glam bags, and studio appointment bookings.</p>
                     <div class="social-links">
@@ -3296,6 +3354,11 @@
             if (activeLink) activeLink.classList.add('active');
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (pageId === 'home' && typeof fitHeroTitle === 'function') {
+                // Re-measure once the home page is actually visible again.
+                requestAnimationFrame(() => requestAnimationFrame(fitHeroTitle));
+            }
         }
 
         // PRODUCT CARD SCROLL-REVEAL ANIMATION
@@ -3379,6 +3442,10 @@
             lines.forEach(line => { line.style.fontSize = ''; });
 
             const containerWidth = heroTitle.parentElement.clientWidth;
+            // Hero isn't visible right now (e.g. a different page is active) — skip.
+            // Fitting against a 0px width would incorrectly shrink the text to its floor.
+            if (!containerWidth) return;
+
             let baseFontSize = parseFloat(getComputedStyle(lines[0]).fontSize);
             const minFontSize = 15; // never shrink past this so text stays readable
 
