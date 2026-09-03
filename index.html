@@ -292,8 +292,6 @@
 
         .brand-logo-text {
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             min-width: 0;
         }
 
@@ -1898,7 +1896,7 @@
             .nav-container {
                 grid-template-columns: auto 1fr auto;
                 grid-template-areas: "toggle logo actions";
-                column-gap: 8px;
+                column-gap: 6px;
             }
             .nav-container .brand-logo {
                 justify-self: center;
@@ -1909,11 +1907,24 @@
                 display: flex;
             }
             .nav-actions {
-                gap: 6px;
+                gap: 4px;
             }
             .icon-btn {
-                width: 38px;
-                height: 38px;
+                width: 34px;
+                height: 34px;
+            }
+            .icon-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+            .badge-count {
+                width: 16px;
+                height: 16px;
+                font-size: 0.6rem;
+            }
+            .brand-logo-icon {
+                width: 18px;
+                height: 18px;
             }
             .main-nav {
                 display: none;
@@ -2014,21 +2025,25 @@
                 grid-template-columns: 1fr;
             }
             .nav-header .container {
-                padding: 0 12px;
+                padding: 0 10px;
             }
             .nav-container {
                 column-gap: 4px;
             }
             .nav-actions {
-                gap: 4px;
+                gap: 3px;
             }
             .icon-btn {
-                width: 34px;
-                height: 34px;
+                width: 32px;
+                height: 32px;
+            }
+            .icon-btn svg {
+                width: 16px;
+                height: 16px;
             }
             .brand-logo-icon {
-                width: 18px;
-                height: 18px;
+                width: 16px;
+                height: 16px;
             }
         }
     </style>
@@ -3484,6 +3499,52 @@
             document.fonts.ready.then(fitHeroTitle);
         }
 
+        // BRAND NAME AUTO-FIT — guarantees "SHINE BY REX" is always fully visible
+        // (never truncated/ellipsised) by shrinking its font-size just enough to
+        // fit the available header space on any screen width.
+        function fitBrandLogo() {
+            const logoLink = document.querySelector('.nav-container .brand-logo');
+            const logoText = logoLink ? logoLink.querySelector('.brand-logo-text') : null;
+            const logoIcon = logoLink ? logoLink.querySelector('.brand-logo-icon') : null;
+            if (!logoLink || !logoText) return;
+
+            // Reset to the CSS-defined size first so we measure honestly.
+            logoText.style.fontSize = '';
+
+            const boxWidth = logoLink.clientWidth;
+            if (!boxWidth) return;
+
+            const iconWidth = logoIcon ? logoIcon.getBoundingClientRect().width : 0;
+            const gapPx = parseFloat(getComputedStyle(logoLink).gap) || 0;
+            const textBudget = boxWidth - iconWidth - gapPx - 2;
+            if (textBudget <= 0) return;
+
+            const baseFontSize = parseFloat(getComputedStyle(logoText).fontSize);
+            const minFontSize = 10.5; // small but still fully readable — never truncated
+
+            const textWidth = logoText.scrollWidth;
+            if (textWidth > textBudget) {
+                let newSize = Math.max(baseFontSize * (textBudget / textWidth) * 0.97, minFontSize);
+                logoText.style.fontSize = newSize + 'px';
+
+                let guard = 0;
+                while (logoText.scrollWidth > textBudget && parseFloat(logoText.style.fontSize) > minFontSize && guard < 20) {
+                    newSize = parseFloat(logoText.style.fontSize) - 0.5;
+                    logoText.style.fontSize = newSize + 'px';
+                    guard++;
+                }
+            }
+        }
+
+        window.addEventListener('load', fitBrandLogo);
+        window.addEventListener('resize', () => {
+            clearTimeout(window._logoFitTimeout);
+            window._logoFitTimeout = setTimeout(fitBrandLogo, 100);
+        });
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(fitBrandLogo);
+        }
+
         // DARK / LIGHT MODE TOGGLE
         const themeToggle = document.getElementById('themeToggle');
         const themeIconMoon = document.getElementById('themeIconMoon');
@@ -3566,6 +3627,19 @@
 
         searchCloseBtn.addEventListener('click', () => {
             searchOverlay.classList.remove('open');
+        });
+
+        // Tap anywhere outside the search panel to close it
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) {
+                searchOverlay.classList.remove('open');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && searchOverlay.classList.contains('open')) {
+                searchOverlay.classList.remove('open');
+            }
         });
 
         searchInput.addEventListener('input', (e) => {
