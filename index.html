@@ -717,6 +717,120 @@
             gap: 24px;
         }
 
+        /* ==========================================================================
+           6b. HORIZONTAL PRODUCT BAR (Bestsellers section only — scoped, does not
+           affect the standard .product-grid used on the Accessories/Lashes pages)
+           ========================================================================== */
+        .product-bar-wrapper {
+            position: relative;
+        }
+
+        .product-bar {
+            display: flex;
+            gap: 28px;
+            overflow-x: auto;
+            scroll-snap-type: x proximity;
+            scroll-behavior: smooth;
+            padding: 8px 4px 28px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .product-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-bar .product-card {
+            flex: 0 0 300px;
+            max-width: 300px;
+            scroll-snap-align: start;
+            border-radius: 28px;
+            padding: 18px;
+        }
+
+        .product-bar .product-thumb {
+            aspect-ratio: 4 / 5;
+            border-radius: 22px;
+            margin-bottom: 18px;
+        }
+
+        .product-bar .product-thumb img {
+            border-radius: 22px;
+        }
+
+        /* Staggered cascade as the row reveals on scroll-into-view */
+        .product-bar .product-card:nth-child(1) { animation-delay: 0s; }
+        .product-bar .product-card:nth-child(2) { animation-delay: 0.12s; }
+        .product-bar .product-card:nth-child(3) { animation-delay: 0.24s; }
+        .product-bar .product-card:nth-child(4) { animation-delay: 0.36s; }
+
+        .bar-nav-btn {
+            position: absolute;
+            top: 42%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1px solid var(--line-color);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            color: var(--dark-plum);
+            transition: var(--transition);
+        }
+
+        .bar-nav-btn:hover {
+            background: var(--pink-vibrant);
+            color: var(--white);
+            border-color: var(--pink-vibrant);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .bar-nav-prev {
+            left: 4px;
+        }
+
+        .bar-nav-next {
+            right: 4px;
+        }
+
+        .bar-nav-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @media (max-width: 1024px) {
+            .bar-nav-btn {
+                display: none;
+            }
+            .product-bar .product-card {
+                flex-basis: 270px;
+                max-width: 270px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-bar {
+                gap: 18px;
+                padding: 6px 4px 24px;
+            }
+            .product-bar .product-card {
+                flex-basis: 78vw;
+                max-width: 78vw;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .product-bar .product-card {
+                flex-basis: 84vw;
+                max-width: 84vw;
+            }
+        }
+
         .product-card {
             background: var(--white);
             border-radius: var(--radius-lg);
@@ -1547,6 +1661,192 @@
             pointer-events: auto;
         }
 
+        /* ==========================================================================
+           PRODUCT DETAIL MODAL
+           ========================================================================== */
+        .product-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            width: 92%;
+            max-width: 900px;
+            max-height: 88vh;
+            background: var(--white);
+            border-radius: 28px;
+            box-shadow: var(--shadow-lg);
+            z-index: 2200;
+            opacity: 0;
+            pointer-events: none;
+            overflow: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .product-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .product-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 5;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .product-modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            max-height: 88vh;
+            overflow-y: auto;
+        }
+
+        .product-modal-gallery {
+            padding: 28px;
+        }
+
+        .product-modal-main-img {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--pink-soft);
+        }
+
+        .product-modal-main-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-modal-fav {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+
+        .product-modal-thumbs {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .product-modal-thumbs img {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .product-modal-thumbs img.active {
+            border-color: var(--pink-vibrant);
+        }
+
+        .product-modal-info {
+            padding: 32px 32px 32px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-modal-info h2 {
+            font-family: var(--font-body);
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--dark-plum);
+            margin: 6px 0 10px;
+            line-height: 1.25;
+        }
+
+        .product-modal-price {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--pink-deep);
+            font-family: var(--font-body);
+            margin: 10px 0 16px;
+        }
+
+        .product-modal-desc {
+            color: var(--plum-body);
+            line-height: 1.6;
+            margin-bottom: 22px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+        }
+
+        .product-modal-option-group {
+            margin-bottom: 22px;
+        }
+
+        .product-modal-option-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--plum-muted);
+            margin-bottom: 10px;
+            font-family: var(--font-body);
+        }
+
+        .option-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .option-pill {
+            padding: 8px 18px;
+            border-radius: 999px;
+            border: 1.5px solid var(--line-color);
+            background: var(--white);
+            color: var(--dark-plum);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-body);
+        }
+
+        .option-pill:hover {
+            border-color: var(--pink-main);
+        }
+
+        .option-pill.selected {
+            background: var(--pink-vibrant);
+            border-color: var(--pink-vibrant);
+            color: var(--white);
+        }
+
+        .product-modal-add-btn {
+            width: 100%;
+            justify-content: center;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .product-modal {
+                width: 94%;
+                max-height: 90vh;
+                border-radius: 24px;
+            }
+            .product-modal-body {
+                grid-template-columns: 1fr;
+            }
+            .product-modal-info {
+                padding: 8px 20px 24px;
+            }
+            .product-modal-gallery {
+                padding: 20px 20px 0;
+            }
+        }
+
         /* WHATSAPP CHECKOUT BUTTON ONLY */
         .whatsapp-checkout-btn {
             display: flex;
@@ -2237,156 +2537,22 @@
                     <h2>Bestselling Lashes</h2>
                     <p>Our most-loved styles, ready to elevate your everyday gaze.</p>
                 </div>
+            </div>
 
-                <div class="product-grid">
-                    <div class="product-card" data-category="volume" data-name="Rex Royal Mega Volume" data-price="28">
-                        <span class="product-badge">Bestseller</span>
-                        <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
-                            <i data-lucide="heart"></i>
-                        </button>
-                        <div class="product-thumb">
-                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" alt="Rex Royal Mega Volume">
-                        </div>
+            <div class="container">
+                <div class="product-bar-wrapper">
+                    <button class="bar-nav-btn bar-nav-prev" id="bestsellersPrev" aria-label="Scroll left">
+                        <i data-lucide="chevron-left"></i>
+                    </button>
 
-                        <div class="product-info">
-                            <div class="product-rating">
-                                <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
-                                <span>5.0 (142 reviews)</span>
-                            </div>
-                            <h3 class="product-title">Rex Royal Mega Volume</h3>
-                            <p class="product-desc">Ultra-dense 16D flutter mink effect for red-carpet glam drama.</p>
-                            <div class="product-footer">
-                                <span class="product-price">₦28.00</span>
-                                <span class="product-tag">25+ Wears</span>
-                            </div>
-                            <div class="card-action-row">
-                                <button class="shop-now-btn" onclick="addToCart('Rex Royal Mega Volume', 28); openCart();">
-                                    Shop Now <i data-lucide="arrow-right"></i>
-                                </button>
-                                <button class="cart-add-btn" onclick="addToCart('Rex Royal Mega Volume', 28)" title="Add to Bag">
-                                    <i data-lucide="shopping-bag"></i>
-                                </button>
-                            </div>
+                    <div class="product-bar" id="bestsellersBar"></div>
 
-                            <div class="expand-toggle-row" onclick="toggleExpandCard(this)">
-                                <span>Tap for details</span>
-                                <i data-lucide="chevron-down"></i>
-                            </div>
-                            <div class="product-expand">
-                                <div class="product-expand-inner">
-                                    <p class="expand-detail">Handcrafted 16D faux mink fans on a soft, flexible cotton band. Reusable up to 25 times with proper care — perfect for full-glam nights and photoshoots.</p>
-                                    <div class="expand-controls">
-                                        <div class="qty-selector">
-                                            <button type="button" class="qty-btn" onclick="changeExpandQty(this, -1)" aria-label="Decrease quantity">−</button>
-                                            <span class="qty-value">1</span>
-                                            <button type="button" class="qty-btn" onclick="changeExpandQty(this, 1)" aria-label="Increase quantity">+</button>
-                                        </div>
-                                        <button type="button" class="expand-add-btn" onclick="addFromExpand(this)">Add to Cart · ₦<span class="expand-total">28.00</span></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-category="hybrid" data-name="Wispy Doll Hybrid" data-price="24">
-                        <span class="product-badge" style="background: var(--dark-plum);">Trending</span>
-                        <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
-                            <i data-lucide="heart"></i>
-                        </button>
-                        <div class="product-thumb">
-                            <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80" alt="Wispy Doll Hybrid Lash">
-                        </div>
-
-                        <div class="product-info">
-                            <div class="product-rating">
-                                <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
-                                <span>4.9 (98 reviews)</span>
-                            </div>
-                            <h3 class="product-title">Wispy Doll Hybrid</h3>
-                            <p class="product-desc">Spiky anime-inspired peaks mixed with delicate volume fans.</p>
-                            <div class="product-footer">
-                                <span class="product-price">₦24.00</span>
-                                <span class="product-tag">Flexible Band</span>
-                            </div>
-                            <div class="card-action-row">
-                                <button class="shop-now-btn" onclick="addToCart('Wispy Doll Hybrid', 24); openCart();">
-                                    Shop Now <i data-lucide="arrow-right"></i>
-                                </button>
-                                <button class="cart-add-btn" onclick="addToCart('Wispy Doll Hybrid', 24)" title="Add to Bag">
-                                    <i data-lucide="shopping-bag"></i>
-                                </button>
-                            </div>
-
-                            <div class="expand-toggle-row" onclick="toggleExpandCard(this)">
-                                <span>Tap for details</span>
-                                <i data-lucide="chevron-down"></i>
-                            </div>
-                            <div class="product-expand">
-                                <div class="product-expand-inner">
-                                    <p class="expand-detail">A textured mix of spiky wisps and soft volume fans for that doll-eyed hybrid look. Lightweight synthetic silk fibers stay comfortable through a full 12-hour day.</p>
-                                    <div class="expand-controls">
-                                        <div class="qty-selector">
-                                            <button type="button" class="qty-btn" onclick="changeExpandQty(this, -1)" aria-label="Decrease quantity">−</button>
-                                            <span class="qty-value">1</span>
-                                            <button type="button" class="qty-btn" onclick="changeExpandQty(this, 1)" aria-label="Increase quantity">+</button>
-                                        </div>
-                                        <button type="button" class="expand-add-btn" onclick="addFromExpand(this)">Add to Cart · ₦<span class="expand-total">24.00</span></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-category="natural" data-name="Velvet Silk Classic" data-price="22">
-                        <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
-                            <i data-lucide="heart"></i>
-                        </button>
-                        <div class="product-thumb">
-                            <img src="https://images.unsplash.com/photo-1512207736890-6ffed4f7cbe0?auto=format&fit=crop&w=600&q=80" alt="Velvet Silk Classic Lash">
-                        </div>
-
-                        <div class="product-info">
-                            <div class="product-rating">
-                                <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
-                                <span>4.8 (76 reviews)</span>
-                            </div>
-                            <h3 class="product-title">Velvet Silk Classic</h3>
-                            <p class="product-desc">Soft, natural flutter for effortless everyday wear.</p>
-                            <div class="product-footer">
-                                <span class="product-price">₦22.00</span>
-                                <span class="product-tag">Featherlight</span>
-                            </div>
-                            <div class="card-action-row">
-                                <button class="shop-now-btn" onclick="addToCart('Velvet Silk Classic', 22); openCart();">
-                                    Shop Now <i data-lucide="arrow-right"></i>
-                                </button>
-                                <button class="cart-add-btn" onclick="addToCart('Velvet Silk Classic', 22)" title="Add to Bag">
-                                    <i data-lucide="shopping-bag"></i>
-                                </button>
-                            </div>
-
-                            <div class="expand-toggle-row" onclick="toggleExpandCard(this)">
-                                <span>Tap for details</span>
-                                <i data-lucide="chevron-down"></i>
-                            </div>
-                            <div class="product-expand">
-                                <div class="product-expand-inner">
-                                    <p class="expand-detail">A soft, natural flutter designed for daily wear. Featherlight silk fibers on a flexible band that moves comfortably with your natural lash line.</p>
-                                    <div class="expand-controls">
-                                        <div class="qty-selector">
-                                            <button type="button" class="qty-btn" onclick="changeExpandQty(this, -1)" aria-label="Decrease quantity">−</button>
-                                            <span class="qty-value">1</span>
-                                            <button type="button" class="qty-btn" onclick="changeExpandQty(this, 1)" aria-label="Increase quantity">+</button>
-                                        </div>
-                                        <button type="button" class="expand-add-btn" onclick="addFromExpand(this)">Add to Cart · ₦<span class="expand-total">22.00</span></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="bar-nav-btn bar-nav-next" id="bestsellersNext" aria-label="Scroll right">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
                 </div>
 
-                <div style="text-align: center; margin-top: 48px;">
+                <div style="text-align: center; margin-top: 40px;">
                     <a onclick="switchPage('lashes')" class="btn btn-secondary">
                         View All Lashes <i data-lucide="arrow-right"></i>
                     </a>
@@ -2490,205 +2656,7 @@
                 <button class="tab-btn" onclick="filterLashes('natural')">Everyday Natural</button>
             </div>
 
-            <div class="product-grid" id="productGrid">
-                <!-- PRODUCT CARD 1 -->
-                <div class="product-card" data-category="volume" data-name="Rex Royal Mega Volume" data-price="28">
-                    <span class="product-badge">Bestseller</span>
-                    <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
-                        <i data-lucide="heart"></i>
-                    </button>
-                    <div class="product-thumb">
-                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" alt="Rex Royal Mega Volume">
-                    </div>
-
-                    <div class="product-info">
-                        <div class="product-rating">
-                            <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
-                            <span>5.0 (142 reviews)</span>
-                        </div>
-                        <h3 class="product-title">Rex Royal Mega Volume</h3>
-                        <p class="product-desc">Ultra-dense 16D flutter mink effect for red-carpet glam drama.</p>
-                        <div class="product-footer">
-                            <span class="product-price">₦28.00</span>
-                            <span class="product-tag">25+ Wears</span>
-                        </div>
-                        <div class="card-action-row">
-                            <button class="shop-now-btn" onclick="addToCart('Rex Royal Mega Volume', 28); openCart();">
-                                Shop Now <i data-lucide="arrow-right"></i>
-                            </button>
-                            <button class="cart-add-btn" onclick="addToCart('Rex Royal Mega Volume', 28)" title="Add to Bag">
-                                <i data-lucide="shopping-bag"></i>
-                            </button>
-                        </div>
-
-                        <div class="expand-toggle-row" onclick="toggleExpandCard(this)">
-                            <span>Tap for details</span>
-                            <i data-lucide="chevron-down"></i>
-                        </div>
-                        <div class="product-expand">
-                            <div class="product-expand-inner">
-                                <p class="expand-detail">Handcrafted 16D faux mink fans on a soft, flexible cotton band. Reusable up to 25 times with proper care — perfect for full-glam nights and photoshoots.</p>
-                                <div class="expand-controls">
-                                    <div class="qty-selector">
-                                        <button type="button" class="qty-btn" onclick="changeExpandQty(this, -1)" aria-label="Decrease quantity">−</button>
-                                        <span class="qty-value">1</span>
-                                        <button type="button" class="qty-btn" onclick="changeExpandQty(this, 1)" aria-label="Increase quantity">+</button>
-                                    </div>
-                                    <button type="button" class="expand-add-btn" onclick="addFromExpand(this)">Add to Cart · ₦<span class="expand-total">28.00</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PRODUCT CARD 2 -->
-                <div class="product-card" data-category="hybrid" data-name="Wispy Doll Hybrid" data-price="24">
-                    <span class="product-badge" style="background: var(--dark-plum);">Trending</span>
-                    <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
-                        <i data-lucide="heart"></i>
-                    </button>
-                    <div class="product-thumb">
-                        <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80" alt="Wispy Doll Hybrid Lash">
-                    </div>
-
-                    <div class="product-info">
-                        <div class="product-rating">
-                            <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
-                            <span>4.9 (98 reviews)</span>
-                        </div>
-                        <h3 class="product-title">Wispy Doll Hybrid</h3>
-                        <p class="product-desc">Spiky anime-inspired peaks mixed with delicate volume fans.</p>
-                        <div class="product-footer">
-                            <span class="product-price">₦24.00</span>
-                            <span class="product-tag">Flexible Band</span>
-                        </div>
-                        <div class="card-action-row">
-                            <button class="shop-now-btn" onclick="addToCart('Wispy Doll Hybrid', 24); openCart();">
-                                Shop Now <i data-lucide="arrow-right"></i>
-                            </button>
-                            <button class="cart-add-btn" onclick="addToCart('Wispy Doll Hybrid', 24)" title="Add to Bag">
-                                <i data-lucide="shopping-bag"></i>
-                            </button>
-                        </div>
-
-                        <div class="expand-toggle-row" onclick="toggleExpandCard(this)">
-                            <span>Tap for details</span>
-                            <i data-lucide="chevron-down"></i>
-                        </div>
-                        <div class="product-expand">
-                            <div class="product-expand-inner">
-                                <p class="expand-detail">A textured mix of spiky wisps and soft volume fans for that doll-eyed hybrid look. Lightweight synthetic silk fibers stay comfortable through a full 12-hour day.</p>
-                                <div class="expand-controls">
-                                    <div class="qty-selector">
-                                        <button type="button" class="qty-btn" onclick="changeExpandQty(this, -1)" aria-label="Decrease quantity">−</button>
-                                        <span class="qty-value">1</span>
-                                        <button type="button" class="qty-btn" onclick="changeExpandQty(this, 1)" aria-label="Increase quantity">+</button>
-                                    </div>
-                                    <button type="button" class="expand-add-btn" onclick="addFromExpand(this)">Add to Cart · ₦<span class="expand-total">24.00</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PRODUCT CARD 3 -->
-                <div class="product-card" data-category="natural" data-name="Velvet Silk Classic" data-price="22">
-                    <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
-                        <i data-lucide="heart"></i>
-                    </button>
-                    <div class="product-thumb">
-                        <img src="https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&w=600&q=80" alt="Velvet Silk Classic">
-                    </div>
-
-                    <div class="product-info">
-                        <div class="product-rating">
-                            <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
-                            <span>4.8 (85 reviews)</span>
-                        </div>
-                        <h3 class="product-title">Velvet Silk Classic</h3>
-                        <p class="product-desc">Subtle lift and length for a clean 'your lashes but better' finish.</p>
-                        <div class="product-footer">
-                            <span class="product-price">₦22.00</span>
-                            <span class="product-tag">Featherlight</span>
-                        </div>
-                        <div class="card-action-row">
-                            <button class="shop-now-btn" onclick="addToCart('Velvet Silk Classic', 22); openCart();">
-                                Shop Now <i data-lucide="arrow-right"></i>
-                            </button>
-                            <button class="cart-add-btn" onclick="addToCart('Velvet Silk Classic', 22)" title="Add to Bag">
-                                <i data-lucide="shopping-bag"></i>
-                            </button>
-                        </div>
-
-                        <div class="expand-toggle-row" onclick="toggleExpandCard(this)">
-                            <span>Tap for details</span>
-                            <i data-lucide="chevron-down"></i>
-                        </div>
-                        <div class="product-expand">
-                            <div class="product-expand-inner">
-                                <p class="expand-detail">Fine single-strand silk lashes for everyday wear that blend seamlessly with your natural set. Barely-there weight, easy to apply, and gentle enough for daily rotation.</p>
-                                <div class="expand-controls">
-                                    <div class="qty-selector">
-                                        <button type="button" class="qty-btn" onclick="changeExpandQty(this, -1)" aria-label="Decrease quantity">−</button>
-                                        <span class="qty-value">1</span>
-                                        <button type="button" class="qty-btn" onclick="changeExpandQty(this, 1)" aria-label="Increase quantity">+</button>
-                                    </div>
-                                    <button type="button" class="expand-add-btn" onclick="addFromExpand(this)">Add to Cart · ₦<span class="expand-total">22.00</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PRODUCT CARD 4 -->
-                <div class="product-card" data-category="volume" data-name="Crown Jewel Faux Mink" data-price="26">
-                    <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
-                        <i data-lucide="heart"></i>
-                    </button>
-                    <div class="product-thumb">
-                        <img src="https://images.unsplash.com/photo-1583001809873-a1284a5da67c?auto=format&fit=crop&w=600&q=80" alt="Crown Jewel Faux Mink">
-                    </div>
-
-                    <div class="product-info">
-                        <div class="product-rating">
-                            <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
-                            <span>4.9 (110 reviews)</span>
-                        </div>
-                        <h3 class="product-title">Crown Jewel Faux Mink</h3>
-                        <p class="product-desc">Cat-eye flared corners that elongate and snatch your eye shape.</p>
-                        <div class="product-footer">
-                            <span class="product-price">₦26.00</span>
-                            <span class="product-tag">Cat-Eye Lift</span>
-                        </div>
-                        <div class="card-action-row">
-                            <button class="shop-now-btn" onclick="addToCart('Crown Jewel Faux Mink', 26); openCart();">
-                                Shop Now <i data-lucide="arrow-right"></i>
-                            </button>
-                            <button class="cart-add-btn" onclick="addToCart('Crown Jewel Faux Mink', 26)" title="Add to Bag">
-                                <i data-lucide="shopping-bag"></i>
-                            </button>
-                        </div>
-
-                        <div class="expand-toggle-row" onclick="toggleExpandCard(this)">
-                            <span>Tap for details</span>
-                            <i data-lucide="chevron-down"></i>
-                        </div>
-                        <div class="product-expand">
-                            <div class="product-expand-inner">
-                                <p class="expand-detail">Flared, elongated corners crafted from soft faux mink for a dramatic cat-eye lift. Our most requested shape for a snatched, sultry finish.</p>
-                                <div class="expand-controls">
-                                    <div class="qty-selector">
-                                        <button type="button" class="qty-btn" onclick="changeExpandQty(this, -1)" aria-label="Decrease quantity">−</button>
-                                        <span class="qty-value">1</span>
-                                        <button type="button" class="qty-btn" onclick="changeExpandQty(this, 1)" aria-label="Increase quantity">+</button>
-                                    </div>
-                                    <button type="button" class="expand-add-btn" onclick="addFromExpand(this)">Add to Cart · ₦<span class="expand-total">26.00</span></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="product-grid" id="productGrid"></div>
         </div>
     </section>
 
@@ -2903,6 +2871,57 @@
         </div>
     </div>
 
+    <!-- PRODUCT DETAIL MODAL -->
+    <div class="drawer-overlay" id="productModalOverlay" onclick="closeProductDetail()"></div>
+    <div class="product-modal" id="productModal">
+        <button class="icon-btn product-modal-close" id="productModalClose" onclick="closeProductDetail()" aria-label="Close product details">
+            <i data-lucide="x"></i>
+        </button>
+
+        <div class="product-modal-body">
+            <div class="product-modal-gallery">
+                <div class="product-modal-main-img">
+                    <img id="pmMainImage" src="" alt="">
+                    <button class="fav-btn product-modal-fav" id="pmFavBtn" onclick="toggleProductModalFav()" title="Add to Favourites">
+                        <i data-lucide="heart"></i>
+                    </button>
+                </div>
+                <div class="product-modal-thumbs" id="pmThumbs"></div>
+            </div>
+
+            <div class="product-modal-info">
+                <div class="product-category" id="pmCategory"></div>
+                <h2 id="pmName"></h2>
+                <div class="product-rating" id="pmRating"></div>
+                <div class="product-modal-price" id="pmPrice"></div>
+                <p class="product-modal-desc" id="pmDesc"></p>
+
+                <div class="product-modal-option-group" id="pmColorGroup" style="display: none;">
+                    <span class="product-modal-option-label">Colour / Variant</span>
+                    <div class="option-pills" id="pmColorOptions"></div>
+                </div>
+
+                <div class="product-modal-option-group" id="pmSizeGroup" style="display: none;">
+                    <span class="product-modal-option-label">Size</span>
+                    <div class="option-pills" id="pmSizeOptions"></div>
+                </div>
+
+                <div class="product-modal-option-group">
+                    <span class="product-modal-option-label">Quantity</span>
+                    <div class="qty-selector">
+                        <button type="button" class="qty-btn" onclick="changeModalQty(-1)" aria-label="Decrease quantity">−</button>
+                        <span class="qty-value" id="pmQty">1</span>
+                        <button type="button" class="qty-btn" onclick="changeModalQty(1)" aria-label="Increase quantity">+</button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary product-modal-add-btn" id="pmAddBtn" onclick="addToCartFromModal()">
+                    Add to Cart · ₦<span id="pmTotal"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- FLOATING ACTION BUTTONS -->
     <a href="#" onclick="openWhatsAppChat(); return false;" class="float-action-btn whatsapp-float" title="Chat on WhatsApp" aria-label="Chat on WhatsApp">
         <svg viewBox="0 0 32 32" fill="currentColor">
@@ -2957,7 +2976,8 @@
                 img: "images/WhatsApp Product 2026-09-01 at 12.25.03 PM_2.jpeg",
                 rating: "5.0 (65 reviews)",
                 tag: "Multi-Tier Organizer",
-                desc: "Compact multi-compartment travel organizer box for all your jewelry pieces."
+                desc: "Compact multi-compartment travel organizer box for all your jewelry pieces.",
+                colors: ["Mint", "Navy", "Cream", "Sky Blue"]
             },
             {
                 name: "Summer friday lip gloss",
@@ -2966,7 +2986,8 @@
                 img: "images/WhatsApp Product 2026-09-01 at 12.25.24 PM_2.jpeg",
                 rating: "4.9 (112 reviews)",
                 tag: "High Shine",
-                desc: "Nourishing lip gloss butter balm for full, glossy, hydrated lips."
+                desc: "Nourishing lip gloss butter balm for full, glossy, hydrated lips.",
+                colors: ["Vanilla Beige", "Iced Coffee", "Hot Chocolate", "Cherry Crush"]
             },
             {
                 name: "beanie",
@@ -2993,7 +3014,8 @@
                 img: "images/WhatsApp Product 2026-09-01 at 12.27.12 PM_2.jpeg",
                 rating: "5.0 (73 reviews)",
                 tag: "Glam Vanity",
-                desc: "Aesthetic bedside vanity mirror designed for flawless makeup and lash touch-ups."
+                desc: "Aesthetic bedside vanity mirror designed for flawless makeup and lash touch-ups.",
+                colors: ["Pink", "Cream"]
             },
             {
                 name: "Gisou honey infused lip gloss",
@@ -3011,7 +3033,8 @@
                 img: "images/classic-tote-bag.jpg",
                 rating: "4.9 (58 reviews)",
                 tag: "Everyday Carry",
-                desc: "Spacious butterfly-print tote bag, perfect for everyday errands and travel."
+                desc: "Spacious butterfly-print tote bag, perfect for everyday errands and travel.",
+                colors: ["Grey Butterfly", "Green Butterfly", "Pink Butterfly"]
             },
             {
                 name: "hair tie",
@@ -3038,7 +3061,8 @@
                 img: "images/faux-flower.jpg",
                 rating: "4.8 (36 reviews)",
                 tag: "Everlasting Bloom",
-                desc: "Lifelike faux floral stems that bring effortless charm to any vanity or shelf."
+                desc: "Lifelike faux floral stems that bring effortless charm to any vanity or shelf.",
+                colors: ["White", "Blue", "Yellow", "Pink"]
             },
             {
                 name: "mini led light",
@@ -3065,7 +3089,8 @@
                 img: "images/classic-boy-bag.jpg",
                 rating: "4.8 (47 reviews)",
                 tag: "Floral Print",
-                desc: "Structured floral-print tote with sturdy handles for a polished everyday look."
+                desc: "Structured floral-print tote with sturdy handles for a polished everyday look.",
+                colors: ["Black", "Pink", "Cream"]
             },
             {
                 name: "claw clip",
@@ -3074,7 +3099,8 @@
                 img: "images/claw-clip.jpg",
                 rating: "5.0 (61 reviews)",
                 tag: "Sweet & Girly",
-                desc: "Peach-charm claw clips that secure a sleek updo with a playful sweet touch."
+                desc: "Peach-charm claw clips that secure a sleek updo with a playful sweet touch.",
+                sizes: ["Small", "Large"]
             },
             {
                 name: "charm",
@@ -3096,17 +3122,82 @@
             }
         ];
 
+        // LASHES PRODUCT DATA (drives both the homepage Bestsellers bar and the full Lashes grid)
+        const LASHES = [
+            {
+                name: "Rex Royal Mega Volume",
+                category: "volume",
+                price: 28,
+                img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+                rating: "5.0 (142 reviews)",
+                tag: "25+ Wears",
+                badge: "Bestseller",
+                desc: "Ultra-dense 16D flutter mink effect for red-carpet glam drama.",
+                detail: "Handcrafted 16D faux mink fans on a soft, flexible cotton band. Reusable up to 25 times with proper care — perfect for full-glam nights and photoshoots.",
+                colors: ["Black Band", "Clear Band"],
+                featured: true
+            },
+            {
+                name: "Wispy Doll Hybrid",
+                category: "hybrid",
+                price: 24,
+                img: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80",
+                rating: "4.9 (98 reviews)",
+                tag: "Flexible Band",
+                badge: "Trending",
+                desc: "Spiky anime-inspired peaks mixed with delicate volume fans.",
+                detail: "A textured mix of spiky wisps and soft volume fans for that doll-eyed hybrid look. Lightweight synthetic silk fibers stay comfortable through a full 12-hour day.",
+                featured: true
+            },
+            {
+                name: "Velvet Silk Classic",
+                category: "natural",
+                price: 22,
+                img: "https://images.unsplash.com/photo-1512207736890-6ffed4f7cbe0?auto=format&fit=crop&w=600&q=80",
+                rating: "4.8 (76 reviews)",
+                tag: "Featherlight",
+                desc: "Soft, natural flutter for effortless everyday wear.",
+                detail: "A soft, natural flutter designed for daily wear. Featherlight silk fibers on a flexible band that moves comfortably with your natural lash line.",
+                colors: ["Black Band", "Clear Band"],
+                featured: true
+            },
+            {
+                name: "Crown Jewel Faux Mink",
+                category: "volume",
+                price: 26,
+                img: "https://images.unsplash.com/photo-1583001809873-a1284a5da67c?auto=format&fit=crop&w=600&q=80",
+                rating: "4.9 (110 reviews)",
+                tag: "Cat-Eye Lift",
+                desc: "Cat-eye flared corners that elongate and snatch your eye shape.",
+                detail: "Flared, elongated corners crafted from soft faux mink for a dramatic cat-eye lift. Our most requested shape for a snatched, sultry finish."
+            }
+        ];
+
+        // Looks up a product by name across both catalogs — used by search, cart
+        // image lookups, and the product detail modal.
+        function findProductByName(name) {
+            return LASHES.find(p => p.name === name) || ACCESSORIES.find(p => p.name === name);
+        }
+
         // RENDER ACCESSORIES GRID
         function renderAccessories(items) {
             const grid = document.getElementById('accessoryGrid');
             if (!grid) return;
 
-            grid.innerHTML = items.map(item => `
+            grid.innerHTML = items.map(item => {
+                const hasVariants = !!(item.colors || item.sizes);
+                const shopAction = hasVariants
+                    ? `openProductDetail('${item.name.replace(/'/g, "\\'")}')`
+                    : `addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price}); openCart();`;
+                const quickAddAction = hasVariants
+                    ? `openProductDetail('${item.name.replace(/'/g, "\\'")}')`
+                    : `addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price})`;
+                return `
                 <div class="product-card" data-category="${item.category}" data-name="${item.name}" data-price="${item.price}">
                     <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
                         <i data-lucide="heart"></i>
                     </button>
-                    <div class="product-thumb">
+                    <div class="product-thumb" onclick="openProductDetail('${item.name.replace(/'/g, "\\'")}')" style="cursor: pointer;">
                         <img src="${item.img}" alt="${item.name}">
                     </div>
                     <div class="product-info">
@@ -3114,27 +3205,91 @@
                             <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
                             <span>${item.rating}</span>
                         </div>
-                        <h3 class="product-title">${item.name}</h3>
+                        <h3 class="product-title" onclick="openProductDetail('${item.name.replace(/'/g, "\\'")}')" style="cursor: pointer;">${item.name}</h3>
                         <p class="product-desc">${item.desc}</p>
                         <div class="product-footer">
                             <span class="product-price">₦${item.price.toFixed(2)}</span>
                             <span class="product-tag">${item.tag}</span>
                         </div>
                         <div class="card-action-row">
-                            <button class="shop-now-btn" onclick="addToCart('${item.name}', ${item.price}); openCart();">
-                                Shop Now <i data-lucide="arrow-right"></i>
+                            <button class="shop-now-btn" onclick="${shopAction}">
+                                ${hasVariants ? 'Select Options' : 'Shop Now'} <i data-lucide="arrow-right"></i>
                             </button>
-                            <button class="cart-add-btn" onclick="addToCart('${item.name}', ${item.price})" title="Add to Bag">
-                                <i data-lucide="shopping-bag"></i>
+                            <button class="cart-add-btn" onclick="${quickAddAction}" title="${hasVariants ? 'View Options' : 'Add to Bag'}">
+                                <i data-lucide="${hasVariants ? 'sliders-horizontal' : 'shopping-bag'}"></i>
                             </button>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             lucide.createIcons();
             observeProductCards(grid);
             applyCategoryLabels(grid);
+        }
+
+        // RENDER LASHES GRID (full catalog page)
+        function renderLashes(items) {
+            const grid = document.getElementById('productGrid');
+            if (!grid) return;
+            renderLashesInto(grid, items);
+        }
+
+        // RENDER BESTSELLERS BAR (homepage horizontal rail — pulls the featured lashes)
+        function renderBestsellersBar() {
+            const bar = document.getElementById('bestsellersBar');
+            if (!bar) return;
+            renderLashesInto(bar, LASHES.filter(p => p.featured));
+        }
+
+        // Shared card-template renderer used by both the Lashes grid and the Bestsellers bar
+        function renderLashesInto(container, items) {
+            const html = items.map(item => {
+                const hasVariants = !!(item.colors || item.sizes);
+                const nameEsc = item.name.replace(/'/g, "\\'");
+                const shopAction = hasVariants
+                    ? `openProductDetail('${nameEsc}')`
+                    : `addToCart('${nameEsc}', ${item.price}); openCart();`;
+                const quickAddAction = hasVariants
+                    ? `openProductDetail('${nameEsc}')`
+                    : `addToCart('${nameEsc}', ${item.price})`;
+                return `
+                <div class="product-card" data-category="${item.category}" data-name="${item.name}" data-price="${item.price}">
+                    ${item.badge ? `<span class="product-badge"${item.badge === 'Trending' ? ' style="background: var(--dark-plum);"' : ''}>${item.badge}</span>` : ''}
+                    <button class="fav-btn" onclick="toggleFav(this, event)" title="Add to Favourites">
+                        <i data-lucide="heart"></i>
+                    </button>
+                    <div class="product-thumb" onclick="openProductDetail('${nameEsc}')" style="cursor: pointer;">
+                        <img src="${item.img}" alt="${item.name}">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <i data-lucide="star" style="width: 14px; height: 14px; fill: currentColor;"></i>
+                            <span>${item.rating}</span>
+                        </div>
+                        <h3 class="product-title" onclick="openProductDetail('${nameEsc}')" style="cursor: pointer;">${item.name}</h3>
+                        <p class="product-desc">${item.desc}</p>
+                        <div class="product-footer">
+                            <span class="product-price">₦${item.price.toFixed(2)}</span>
+                            <span class="product-tag">${item.tag}</span>
+                        </div>
+                        <div class="card-action-row">
+                            <button class="shop-now-btn" onclick="${shopAction}">
+                                ${hasVariants ? 'Select Options' : 'Shop Now'} <i data-lucide="arrow-right"></i>
+                            </button>
+                            <button class="cart-add-btn" onclick="${quickAddAction}" title="${hasVariants ? 'View Options' : 'Add to Bag'}">
+                                <i data-lucide="${hasVariants ? 'sliders-horizontal' : 'shopping-bag'}"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }).join('');
+            container.innerHTML = html;
+            lucide.createIcons();
+            observeProductCards(container);
+            applyCategoryLabels(container);
         }
 
         // FILTER ACCESSORIES
@@ -3157,14 +3312,11 @@
             buttons.forEach(b => b.classList.remove('active'));
             if (event && event.target) event.target.classList.add('active');
 
-            const cards = document.querySelectorAll('#productGrid .product-card');
-            cards.forEach(card => {
-                if (cat === 'all' || card.getAttribute('data-category') === cat) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+            if (cat === 'all') {
+                renderLashes(LASHES);
+            } else {
+                renderLashes(LASHES.filter(p => p.category === cat));
+            }
         }
 
         // FAVOURITES & EXPAND CARD TOGGLE
@@ -3247,6 +3399,7 @@
 
         function openWishlist() {
             closeCart();
+            if (typeof closeProductDetail === 'function') closeProductDetail();
             document.getElementById('wishlistDrawer').classList.add('open');
             document.getElementById('wishlistOverlay').classList.add('open');
         }
@@ -3258,54 +3411,44 @@
 
         document.getElementById('wishlistBtn').addEventListener('click', openWishlist);
 
-        function toggleExpandCard(row) {
-            const card = row.closest('.product-card');
-            if (card) {
-                card.classList.toggle('expanded');
-            }
-        }
-
-        function changeExpandQty(btn, delta) {
-            const container = btn.closest('.expand-controls');
-            const qtySpan = container.querySelector('.qty-value');
-            const totalSpan = container.querySelector('.expand-total');
-            const card = btn.closest('.product-card');
-            const unitPrice = parseFloat(card.getAttribute('data-price')) || 24;
-
-            let currentQty = parseInt(qtySpan.textContent) || 1;
-            currentQty += delta;
-            if (currentQty < 1) currentQty = 1;
-
-            qtySpan.textContent = currentQty;
-            totalSpan.textContent = (unitPrice * currentQty).toFixed(2);
-        }
-
-        function addFromExpand(btn) {
-            const card = btn.closest('.product-card');
-            const name = card.getAttribute('data-name');
-            const price = parseFloat(card.getAttribute('data-price'));
-            const qtySpan = card.querySelector('.qty-value');
-            const qty = parseInt(qtySpan.textContent) || 1;
-
-            addToCart(name, price, qty);
-            openCart();
-        }
-
         // CART MANAGEMENT & DRAWER
         let cart = [];
 
-        function addToCart(name, price, qty = 1) {
-            const existing = cart.find(item => item.name === name);
+        // Cart items are keyed by name + color + size so different configurations
+        // of the same product (e.g. Pink/Small vs Black/Large) never merge.
+        function cartLineKey(name, color, size) {
+            return `${name}|${color || ''}|${size || ''}`;
+        }
+
+        function addToCart(name, price, qty = 1, options = {}) {
+            const color = options.color || null;
+            const size = options.size || null;
+            let img = options.img || null;
+            if (!img) {
+                const product = findProductByName(name);
+                img = product ? product.img : '';
+            }
+
+            const key = cartLineKey(name, color, size);
+            const existing = cart.find(item => cartLineKey(item.name, item.color, item.size) === key);
             if (existing) {
                 existing.qty += qty;
             } else {
-                cart.push({ name, price, qty });
+                cart.push({ name, price, qty, color, size, img });
             }
             updateCartUI();
         }
 
         function removeFromCart(index) {
             cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function changeCartQty(index, delta) {
+            const item = cart[index];
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty < 1) item.qty = 1;
             updateCartUI();
         }
 
@@ -3323,20 +3466,35 @@
 
             const list = document.getElementById('cartItemsList');
             if (cart.length === 0) {
-                list.innerHTML = `<p style="text-align: center; color: var(--plum-muted); margin-top: 40px;">Your bag is empty.</p>`;
+                list.innerHTML = `
+                    <div style="text-align: center; margin-top: 48px;">
+                        <i data-lucide="shopping-bag" style="width: 42px; height: 42px; color: var(--plum-muted); margin-bottom: 12px;"></i>
+                        <p style="color: var(--plum-muted); margin-bottom: 20px;">Your bag is empty.</p>
+                        <button type="button" class="btn btn-secondary" onclick="closeCart()" style="justify-content: center;">Continue Shopping</button>
+                    </div>`;
             } else {
                 list.innerHTML = cart.map((item, index) => `
-                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--line-color);">
-                        <div>
-                            <strong style="font-size: 0.95rem; color: var(--dark-plum); display: block; font-family: var(--font-body);">${item.name}</strong>
-                            <span style="font-size: 0.85rem; color: var(--plum-muted); font-family: var(--font-body);">₦${item.price.toFixed(2)} × ${item.qty}</span>
+                    <div style="display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line-color);">
+                        <img src="${item.img || ''}" alt="${item.name}" style="width: 64px; height: 64px; border-radius: 14px; object-fit: cover; flex-shrink: 0;">
+                        <div style="flex-grow: 1; min-width: 0;">
+                            <strong style="font-size: 0.92rem; color: var(--dark-plum); display: block; font-family: var(--font-body);">${item.name}</strong>
+                            ${(item.color || item.size) ? `
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0;">
+                                    ${item.color ? `<span style="font-size: 0.72rem; background: var(--pink-surface); color: var(--pink-deep); padding: 2px 8px; border-radius: 999px; font-family: var(--font-body);">${item.color}</span>` : ''}
+                                    ${item.size ? `<span style="font-size: 0.72rem; background: var(--pink-surface); color: var(--pink-deep); padding: 2px 8px; border-radius: 999px; font-family: var(--font-body);">Size: ${item.size}</span>` : ''}
+                                </div>` : ''}
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
+                                <div class="qty-selector" style="transform: scale(0.85); transform-origin: left center;">
+                                    <button type="button" class="qty-btn" onclick="changeCartQty(${index}, -1)" aria-label="Decrease quantity">−</button>
+                                    <span class="qty-value">${item.qty}</span>
+                                    <button type="button" class="qty-btn" onclick="changeCartQty(${index}, 1)" aria-label="Increase quantity">+</button>
+                                </div>
+                                <strong style="color: var(--pink-vibrant); font-size: 0.92rem; font-family: var(--font-body);">₦${(item.price * item.qty).toFixed(2)}</strong>
+                            </div>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <strong style="color: var(--pink-vibrant); font-size: 0.95rem; font-family: var(--font-body);">₦${(item.price * item.qty).toFixed(2)}</strong>
-                            <button class="cart-item-remove" onclick="removeFromCart(${index})" title="Remove item">
-                                <i data-lucide="trash-2"></i>
-                            </button>
-                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})" title="Remove item">
+                            <i data-lucide="trash-2"></i>
+                        </button>
                     </div>
                 `).join('');
             }
@@ -3345,6 +3503,7 @@
 
         function openCart() {
             closeWishlist();
+            if (typeof closeProductDetail === 'function') closeProductDetail();
             document.getElementById('cartDrawer').classList.add('open');
             document.getElementById('drawerOverlay').classList.add('open');
         }
@@ -3355,6 +3514,168 @@
         }
 
         document.getElementById('cartToggle').addEventListener('click', openCart);
+
+        // PRODUCT DETAIL MODAL
+        let pmState = {
+            product: null,
+            selectedColor: null,
+            selectedSize: null,
+            qty: 1,
+            images: []
+        };
+
+        function openProductDetail(name) {
+            const product = findProductByName(name);
+            if (!product) return;
+
+            // Close any other open panels first
+            closeCart();
+            closeWishlist();
+            if (typeof searchOverlay !== 'undefined') searchOverlay.classList.remove('open');
+
+            pmState = {
+                product,
+                selectedColor: null,
+                selectedSize: null,
+                qty: 1,
+                images: (product.gallery && product.gallery.length) ? product.gallery : [product.img]
+            };
+
+            document.getElementById('pmMainImage').src = pmState.images[0];
+            document.getElementById('pmMainImage').alt = product.name;
+            document.getElementById('pmCategory').textContent = CATEGORY_LABELS[product.category] || product.category;
+            document.getElementById('pmName').textContent = product.name;
+            document.getElementById('pmRating').innerHTML = `<i data-lucide="star" style="width:14px;height:14px;fill:currentColor;"></i><span>${product.rating}</span>`;
+            document.getElementById('pmPrice').textContent = `₦${product.price.toFixed(2)}`;
+            document.getElementById('pmDesc').textContent = product.detail || product.desc;
+            document.getElementById('pmQty').textContent = '1';
+            updatePmTotal();
+
+            // Gallery thumbnails — only shown when there's more than one real image
+            const thumbsEl = document.getElementById('pmThumbs');
+            if (pmState.images.length > 1) {
+                thumbsEl.style.display = 'flex';
+                thumbsEl.innerHTML = pmState.images.map((src, i) => `
+                    <img src="${src}" alt="${product.name} view ${i + 1}" class="${i === 0 ? 'active' : ''}" onclick="setPmImage(${i})">
+                `).join('');
+            } else {
+                thumbsEl.style.display = 'none';
+                thumbsEl.innerHTML = '';
+            }
+
+            // Colour options — hidden entirely when the product has none
+            const colorGroup = document.getElementById('pmColorGroup');
+            if (product.colors && product.colors.length) {
+                colorGroup.style.display = 'block';
+                document.getElementById('pmColorOptions').innerHTML = product.colors.map(c => `
+                    <button type="button" class="option-pill" onclick="selectPmOption('color', this, '${c.replace(/'/g, "\\'")}')">${c}</button>
+                `).join('');
+            } else {
+                colorGroup.style.display = 'none';
+            }
+
+            // Size options — hidden entirely when the product has none
+            const sizeGroup = document.getElementById('pmSizeGroup');
+            if (product.sizes && product.sizes.length) {
+                sizeGroup.style.display = 'block';
+                document.getElementById('pmSizeOptions').innerHTML = product.sizes.map(s => `
+                    <button type="button" class="option-pill" onclick="selectPmOption('size', this, '${s.replace(/'/g, "\\'")}')">${s}</button>
+                `).join('');
+            } else {
+                sizeGroup.style.display = 'none';
+            }
+
+            // Sync favourite heart state
+            const favBtn = document.getElementById('pmFavBtn');
+            const isFav = wishlist.some(w => w.name === product.name);
+            favBtn.classList.toggle('active', isFav);
+
+            document.getElementById('productModal').classList.add('open');
+            document.getElementById('productModalOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+
+        function closeProductDetail() {
+            document.getElementById('productModal').classList.remove('open');
+            document.getElementById('productModalOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function setPmImage(index) {
+            document.getElementById('pmMainImage').src = pmState.images[index];
+            document.querySelectorAll('#pmThumbs img').forEach((img, i) => {
+                img.classList.toggle('active', i === index);
+            });
+        }
+
+        function selectPmOption(type, btn, value) {
+            const group = btn.parentElement;
+            group.querySelectorAll('.option-pill').forEach(p => p.classList.remove('selected'));
+            btn.classList.add('selected');
+            if (type === 'color') pmState.selectedColor = value;
+            if (type === 'size') pmState.selectedSize = value;
+        }
+
+        function changeModalQty(delta) {
+            pmState.qty += delta;
+            if (pmState.qty < 1) pmState.qty = 1;
+            document.getElementById('pmQty').textContent = pmState.qty;
+            updatePmTotal();
+        }
+
+        function updatePmTotal() {
+            if (!pmState.product) return;
+            document.getElementById('pmTotal').textContent = (pmState.product.price * pmState.qty).toFixed(2);
+        }
+
+        function toggleProductModalFav() {
+            const favBtn = document.getElementById('pmFavBtn');
+            if (!pmState.product) return;
+            // Re-use the same toggle logic as card favourite buttons for consistent state
+            const isNowActive = !favBtn.classList.contains('active');
+            favBtn.classList.toggle('active', isNowActive);
+            favBtn.classList.remove('fav-pulse');
+            void favBtn.offsetWidth;
+            favBtn.classList.add('fav-pulse');
+
+            const name = pmState.product.name;
+            if (isNowActive) {
+                if (!wishlist.find(i => i.name === name)) {
+                    wishlist.push({ name, price: pmState.product.price, img: pmState.product.img });
+                }
+            } else {
+                wishlist = wishlist.filter(i => i.name !== name);
+            }
+            updateWishlistUI();
+
+            // Keep any matching card's heart icon in sync too
+            document.querySelectorAll(`.product-card[data-name="${CSS.escape(name)}"] .fav-btn`).forEach(btn => {
+                btn.classList.toggle('active', isNowActive);
+            });
+        }
+
+        function addToCartFromModal() {
+            const product = pmState.product;
+            if (!product) return;
+
+            if (product.colors && product.colors.length && !pmState.selectedColor) {
+                alert('Please select a colour/variant before adding to cart.');
+                return;
+            }
+            if (product.sizes && product.sizes.length && !pmState.selectedSize) {
+                alert('Please select a size before adding to cart.');
+                return;
+            }
+
+            addToCart(product.name, product.price, pmState.qty, {
+                color: pmState.selectedColor,
+                size: pmState.selectedSize,
+                img: pmState.images[0]
+            });
+            closeProductDetail();
+            openCart();
+        }
 
         // CHECKOUT VIA WHATSAPP ONLY
         function checkoutViaWhatsApp() {
@@ -3445,6 +3766,46 @@
                 cards.forEach(card => card.classList.add('in-view', 'anim-done'));
             }
         }
+
+        // HORIZONTAL PRODUCT BAR — prev/next controls (Bestsellers section)
+        (function initProductBar() {
+            const bar = document.getElementById('bestsellersBar');
+            const prevBtn = document.getElementById('bestsellersPrev');
+            const nextBtn = document.getElementById('bestsellersNext');
+            if (!bar || !prevBtn || !nextBtn) return;
+
+            function cardScrollStep() {
+                const firstCard = bar.querySelector('.product-card');
+                const gap = parseFloat(getComputedStyle(bar).gap) || 28;
+                return firstCard ? firstCard.getBoundingClientRect().width + gap : 300;
+            }
+
+            function updateBarNavButtons() {
+                const maxScroll = bar.scrollWidth - bar.clientWidth - 2;
+                prevBtn.classList.toggle('hidden', bar.scrollLeft <= 2);
+                nextBtn.classList.toggle('hidden', bar.scrollLeft >= maxScroll);
+            }
+
+            prevBtn.addEventListener('click', () => {
+                bar.scrollBy({ left: -cardScrollStep(), behavior: 'smooth' });
+            });
+            nextBtn.addEventListener('click', () => {
+                bar.scrollBy({ left: cardScrollStep(), behavior: 'smooth' });
+            });
+
+            bar.addEventListener('scroll', () => {
+                clearTimeout(bar._scrollTimeout);
+                bar._scrollTimeout = setTimeout(updateBarNavButtons, 50);
+            });
+
+            window.addEventListener('resize', () => {
+                clearTimeout(window._barResizeTimeout);
+                window._barResizeTimeout = setTimeout(updateBarNavButtons, 150);
+            });
+
+            window.addEventListener('load', updateBarNavButtons);
+            updateBarNavButtons();
+        })();
 
         // VISIBLE PRODUCT CATEGORY LABEL — inserted above the title on every card
         const CATEGORY_LABELS = {
@@ -3687,6 +4048,9 @@
             if (e.key === 'Escape' && searchOverlay.classList.contains('open')) {
                 searchOverlay.classList.remove('open');
             }
+            if (e.key === 'Escape' && document.getElementById('productModal').classList.contains('open')) {
+                closeProductDetail();
+            }
         });
 
         searchInput.addEventListener('input', (e) => {
@@ -3696,21 +4060,23 @@
                 return;
             }
 
-            const lashCards = Array.from(document.querySelectorAll('#productGrid .product-card')).map(card => ({
-                name: card.getAttribute('data-name'),
-                price: parseFloat(card.getAttribute('data-price')),
-                img: card.querySelector('img').src,
-                type: 'Lashes'
-            }));
-
-            const combined = [...lashCards, ...ACCESSORIES.map(a => ({ name: a.name, price: a.price, img: a.img, type: 'Accessories' }))];
+            const combined = [
+                ...LASHES.map(p => ({ ...p, type: 'Lashes' })),
+                ...ACCESSORIES.map(p => ({ ...p, type: 'Accessories' }))
+            ];
             const matches = combined.filter(i => i.name.toLowerCase().includes(query));
 
             if (matches.length === 0) {
                 searchResults.innerHTML = `<p style="text-align: center; color: var(--plum-muted); padding: 20px 0;">No items found matching "${query}".</p>`;
             } else {
-                searchResults.innerHTML = matches.map(m => `
-                    <div class="search-result-row" onclick="addToCart('${m.name}', ${m.price}); searchOverlay.classList.remove('open'); openCart();">
+                searchResults.innerHTML = matches.map(m => {
+                    const hasVariants = !!(m.colors || m.sizes);
+                    const nameEsc = m.name.replace(/'/g, "\\'");
+                    const action = hasVariants
+                        ? `openProductDetail('${nameEsc}'); searchOverlay.classList.remove('open');`
+                        : `addToCart('${nameEsc}', ${m.price}); searchOverlay.classList.remove('open'); openCart();`;
+                    return `
+                    <div class="search-result-row" onclick="${action}">
                         <div class="search-result-thumb">
                             <img src="${m.img}" alt="${m.name}">
                         </div>
@@ -3720,7 +4086,8 @@
                         </div>
                         <div class="search-result-price">₦${m.price.toFixed(2)}</div>
                     </div>
-                `).join('');
+                `;
+                }).join('');
             }
         });
 
@@ -3753,6 +4120,8 @@
             }, 600);
 
             renderAccessories(ACCESSORIES);
+            renderLashes(LASHES);
+            renderBestsellersBar();
             observeProductCards();
             applyCategoryLabels();
         });
