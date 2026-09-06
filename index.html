@@ -160,45 +160,67 @@
         }
 
         .section-padding {
-            padding: 96px 0;
+            padding: 130px 0;
         }
 
         @media (max-width: 768px) {
             .section-padding {
-                padding: 60px 0;
+                padding: 76px 0;
             }
         }
 
         .pill-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: var(--white);
-            color: var(--pink-deep);
-            padding: 6px 16px;
-            border-radius: var(--radius-full);
-            font-size: 0.85rem;
+            gap: 8px;
+            background: transparent;
+            color: var(--pink-vibrant);
+            padding: 0;
+            border-radius: 0;
+            font-size: 0.8rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border: 1px solid var(--line-color);
-            box-shadow: var(--shadow-sm);
+            letter-spacing: 0.14em;
+            border: none;
+            box-shadow: none;
             font-family: var(--font-body);
+        }
+
+        .pill-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--pink-vibrant);
+            flex-shrink: 0;
+        }
+
+        /* Solid pill variant — used where a badge sits on a colored/dark surface
+           and needs its own contained shape rather than the plain text kicker style */
+        .pill-badge-solid {
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--line-color);
+        }
+
+        .pill-badge-solid::before {
+            display: none;
         }
 
         .section-header {
             text-align: center;
             max-width: 640px;
-            margin: 0 auto 56px;
+            margin: 0 auto 72px;
         }
 
         .section-header h2 {
-            font-size: clamp(2.4rem, 4vw, 3.4rem);
+            font-size: clamp(2.6rem, 4.4vw, 3.8rem);
             color: var(--dark-plum);
-            margin: 12px 0 16px;
-            line-height: 1.15;
+            margin: 18px 0 18px;
+            line-height: 1.1;
             font-family: var(--font-heading);
             font-weight: 700;
+            letter-spacing: -0.01em;
         }
 
         .section-header p {
@@ -534,7 +556,9 @@
         .hero-content .pill-badge {
             background: rgba(255, 255, 255, 0.12);
             color: var(--white);
-            border-color: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-full);
+            padding: 6px 16px;
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
             white-space: nowrap;
@@ -542,6 +566,11 @@
             overflow: hidden;
             text-overflow: ellipsis;
             margin-bottom: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-content .pill-badge::before {
+            display: none;
         }
 
         /* Hero headline — same elegant Cormorant Garamond serif as the brand name */
@@ -663,7 +692,7 @@
         }
 
         .finish-look-banner h2 {
-            font-size: clamp(2.4rem, 4vw, 3.4rem);
+            font-size: clamp(2.6rem, 4.4vw, 3.8rem);
             color: var(--dark-plum);
             margin: 14px 0 12px;
             font-family: var(--font-heading);
@@ -764,6 +793,14 @@
         .product-bar .product-card:nth-child(3) { animation-delay: 0.24s; }
         .product-bar .product-card:nth-child(4) { animation-delay: 0.36s; }
 
+        .feature-grid .feature-card:nth-child(1) { animation-delay: 0s; }
+        .feature-grid .feature-card:nth-child(2) { animation-delay: 0.12s; }
+        .feature-grid .feature-card:nth-child(3) { animation-delay: 0.24s; }
+
+        .contact-grid .contact-card:nth-child(1) { animation-delay: 0s; }
+        .contact-grid .contact-card:nth-child(2) { animation-delay: 0.12s; }
+        .contact-grid .contact-card:nth-child(3) { animation-delay: 0.24s; }
+
         .bar-nav-btn {
             position: absolute;
             top: 42%;
@@ -863,6 +900,23 @@
             transform: translateY(-8px);
             box-shadow: var(--shadow-md);
             border-color: var(--pink-main);
+        }
+
+        /* Generic scroll-reveal — used for section headers, feature cards, and
+           other editorial content blocks beyond just product cards */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(32px);
+        }
+
+        .reveal-up.in-view {
+            opacity: 1;
+            transform: translateY(0);
+            animation: cardReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .reveal-up.in-view.anim-done {
+            animation: none;
         }
 
         .product-badge {
@@ -1365,7 +1419,7 @@
         }
 
         .about-content h2 {
-            font-size: clamp(2.4rem, 4vw, 3.4rem);
+            font-size: clamp(2.6rem, 4.4vw, 3.8rem);
             color: var(--white);
             margin: 16px 0 24px;
             line-height: 1.15;
@@ -1420,7 +1474,7 @@
         }
 
         .cta-box h2 {
-            font-size: clamp(2.4rem, 4vw, 3.5rem);
+            font-size: clamp(2.8rem, 4.6vw, 4rem);
             margin-bottom: 16px;
             font-family: var(--font-heading);
             font-weight: 700;
@@ -2112,7 +2166,7 @@
             bottom: 0;
             width: 50%;
             z-index: 10001;
-            background: linear-gradient(160deg, var(--dark-plum) 0%, #3a1224 55%, var(--pink-deep) 150%);
+            background: linear-gradient(160deg, #000000 0%, #0a0a0a 55%, #161616 150%);
             transition: transform 0.9s cubic-bezier(0.83, 0, 0.17, 1);
             will-change: transform;
         }
@@ -2532,7 +2586,7 @@
         <!-- SHOP / PRODUCTS — main focus, directly after hero -->
         <section class="section-padding bestsellers-section">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header reveal-up">
                     <div class="pill-badge">Shop The Edit</div>
                     <h2>Bestselling Lashes</h2>
                     <p>Our most-loved styles, ready to elevate your everyday gaze.</p>
@@ -2562,14 +2616,14 @@
 
         <section class="section-padding beauty-features">
             <div class="container">
-                <div class="section-header">
+                <div class="section-header reveal-up">
                     <div class="pill-badge">Studio Quality Care</div>
                     <h2>Featured Beauty Essentials</h2>
                     <p>Everything you need to keep your lashes lush, clean, and lasting for weeks.</p>
                 </div>
 
                 <div class="feature-grid">
-                    <div class="feature-card">
+                    <div class="feature-card reveal-up">
                         <div class="feature-icon-box">
                             <i data-lucide="sparkle" style="width: 36px; height: 36px;"></i>
                         </div>
@@ -2577,7 +2631,7 @@
                         <p>Infused with peptide complexes to strengthen natural lashes and prolong lash extension retention by up to 2 weeks.</p>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card reveal-up">
                         <div class="feature-icon-box">
                             <i data-lucide="droplet" style="width: 36px; height: 36px;"></i>
                         </div>
@@ -2585,7 +2639,7 @@
                         <p>Oil-free lash shampoo formulation designed to gently cleanse oils and residue without weakening lash glue bonding.</p>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card reveal-up">
                         <div class="feature-icon-box">
                             <i data-lucide="wand-2" style="width: 36px; height: 36px;"></i>
                         </div>
@@ -2598,7 +2652,7 @@
 
         <section class="section-padding cta-section">
             <div class="container">
-                <div class="cta-box">
+                <div class="cta-box reveal-up">
                     <h2>Ready To Elevate Your Lash Game?</h2>
                     <p>Order your handcrafted lashes today or book an exclusive 1-on-1 glam lash set at our studio location.</p>
                     <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
@@ -2617,9 +2671,8 @@
     <!-- ==================== PAGE 2: ACCESSORIES VIEW ==================== -->
     <section class="section-padding collection-section page-section" id="accessories-view" style="background: var(--pink-soft);">
         <div class="container">
-            <div class="finish-look-banner">
+            <div class="finish-look-banner reveal-up">
                 <div class="pill-badge">
-                    <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
                     Luxury Glam Essentials
                 </div>
                 <h2>Finish Every Look</h2>
@@ -2643,7 +2696,7 @@
     <!-- ==================== PAGE 3: LASHES VIEW ==================== -->
     <section class="section-padding collection-section page-section" id="lashes-view">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header reveal-up">
                 <div class="pill-badge">Curated Lash Wardrobe</div>
                 <h2>Explore The Lash Edit</h2>
                 <p>Find your signature gaze—from natural daytime flutter to drama-filled evening volume.</p>
@@ -2669,8 +2722,8 @@
                 </div>
             </div>
 
-            <div class="about-content">
-                <div class="pill-badge" style="background: rgba(255,42,133,0.15); color: var(--pink-vibrant); border-color: rgba(255,42,133,0.3);">
+            <div class="about-content reveal-up">
+                <div class="pill-badge pill-badge-solid" style="background: rgba(255,42,133,0.15); color: var(--pink-vibrant); border-color: rgba(255,42,133,0.3);">
                     The Rex Promise
                 </div>
                 <h2>Crafted For Women Who Love To Stand Out.</h2>
@@ -2703,14 +2756,14 @@
     <!-- ==================== PAGE 5: CONTACT VIEW ==================== -->
     <section class="section-padding contact-section page-section" id="contact-view">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header reveal-up">
                 <div class="pill-badge">Let's Connect</div>
                 <h2>We'd Love To Hear From You</h2>
                 <p>Reach out for bookings, product questions, or just to say hi — we're one tap away.</p>
             </div>
 
             <div class="contact-grid">
-                <a href="#" onclick="openWhatsAppChat(); return false;" class="contact-card">
+                <a href="#" onclick="openWhatsAppChat(); return false;" class="contact-card reveal-up">
                     <div class="contact-icon-box contact-icon-whatsapp">
                         <i data-lucide="message-circle"></i>
                     </div>
@@ -2718,7 +2771,7 @@
                     <p>Chat with us directly for quick replies and order updates.</p>
                 </a>
 
-                <a href="https://www.instagram.com/shinebyrex" target="_blank" class="contact-card">
+                <a href="https://www.instagram.com/shinebyrex" target="_blank" class="contact-card reveal-up">
                     <div class="contact-icon-box contact-icon-instagram">
                         <i data-lucide="instagram"></i>
                     </div>
@@ -2726,7 +2779,7 @@
                     <p>See our latest looks, restocks, and behind-the-scenes glam.</p>
                 </a>
 
-                <a href="https://www.tiktok.com/@shinebyrex" target="_blank" class="contact-card">
+                <a href="https://www.tiktok.com/@shinebyrex" target="_blank" class="contact-card reveal-up">
                     <div class="contact-icon-box contact-icon-tiktok">
                         <i data-lucide="video"></i>
                     </div>
@@ -2784,7 +2837,6 @@
     <div class="booking-modal" id="bookingModal">
         <div class="booking-modal-header">
             <div class="pill-badge">
-                <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
                 Studio Booking
             </div>
             <button class="icon-btn" onclick="closeBookingModal()" aria-label="Close modal">
@@ -3776,6 +3828,34 @@
             }
         }
 
+        // GENERAL SCROLL-REVEAL — section headers, feature cards, contact cards,
+        // and other editorial content blocks fade/slide up as they enter view.
+        const generalRevealObserver = (typeof IntersectionObserver !== 'undefined')
+            ? new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        el.classList.add('in-view');
+                        el.addEventListener('animationend', function handler() {
+                            el.classList.add('anim-done');
+                            el.removeEventListener('animationend', handler);
+                        }, { once: true });
+                        generalRevealObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.15 })
+            : null;
+
+        function observeRevealElements(scope) {
+            const root = scope || document;
+            const els = root.querySelectorAll('.reveal-up:not(.in-view)');
+            if (generalRevealObserver) {
+                els.forEach(el => generalRevealObserver.observe(el));
+            } else {
+                els.forEach(el => el.classList.add('in-view', 'anim-done'));
+            }
+        }
+
         // HORIZONTAL PRODUCT BAR — prev/next controls (Bestsellers section)
         (function initProductBar() {
             const bar = document.getElementById('bestsellersBar');
@@ -4133,6 +4213,7 @@
             renderBestsellersBar();
             observeProductCards();
             applyCategoryLabels();
+            observeRevealElements();
         });
     </script>
 </body>
