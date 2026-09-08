@@ -793,10 +793,6 @@
         .product-bar .product-card:nth-child(3) { animation-delay: 0.24s; }
         .product-bar .product-card:nth-child(4) { animation-delay: 0.36s; }
 
-        .feature-grid .feature-card:nth-child(1) { animation-delay: 0s; }
-        .feature-grid .feature-card:nth-child(2) { animation-delay: 0.12s; }
-        .feature-grid .feature-card:nth-child(3) { animation-delay: 0.24s; }
-
         .contact-grid .contact-card:nth-child(1) { animation-delay: 0s; }
         .contact-grid .contact-card:nth-child(2) { animation-delay: 0.12s; }
         .contact-grid .contact-card:nth-child(3) { animation-delay: 0.24s; }
@@ -1335,56 +1331,128 @@
         /* ==========================================================================
            7. BEAUTY ESSENTIALS & ABOUT SECTION
            ========================================================================== */
-        .beauty-features {
-            background: var(--pink-soft);
-        }
-
-        .feature-grid {
+        /* ==========================================================================
+           FEATURED ACCESSORIES — large imagery, minimal clutter (homepage teaser)
+           ========================================================================== */
+        .featured-accessories-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
         }
 
-        .feature-card {
+        .featured-accessory-card {
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .featured-accessory-img {
+            position: relative;
+            aspect-ratio: 4 / 5;
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--pink-soft);
+            margin-bottom: 18px;
+        }
+
+        .featured-accessory-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .featured-accessory-card:hover .featured-accessory-img img {
+            transform: scale(1.06);
+        }
+
+        .featured-accessory-name {
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--dark-plum);
+            margin-bottom: 4px;
+        }
+
+        .featured-accessory-price {
+            font-family: var(--font-body);
+            font-weight: 800;
+            color: var(--pink-deep);
+            font-size: 1.05rem;
+        }
+
+        .featured-accessories-grid .featured-accessory-card:nth-child(1) { animation-delay: 0s; }
+        .featured-accessories-grid .featured-accessory-card:nth-child(2) { animation-delay: 0.1s; }
+        .featured-accessories-grid .featured-accessory-card:nth-child(3) { animation-delay: 0.2s; }
+        .featured-accessories-grid .featured-accessory-card:nth-child(4) { animation-delay: 0.3s; }
+
+        @media (max-width: 1024px) {
+            .featured-accessories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .featured-accessories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ==========================================================================
+           ABOUT / BRAND TEASER (homepage)
+           ========================================================================== */
+        .home-about-teaser {
             background: var(--white);
-            padding: 36px 28px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--line-color);
-            box-shadow: var(--shadow-sm);
-            text-align: center;
-            transition: var(--transition);
         }
 
-        .feature-card:hover {
-            transform: translateY(-6px);
-            border-color: var(--pink-main);
+        .about-teaser-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .about-teaser-image {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
             box-shadow: var(--shadow-md);
         }
 
-        .feature-icon-box {
-            width: 72px;
-            height: 72px;
-            border-radius: var(--radius-md);
-            background: var(--pink-light);
-            color: var(--pink-vibrant);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
+        .about-teaser-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .feature-card h3 {
-            font-size: 1.35rem;
-            color: var(--dark-plum);
-            margin-bottom: 12px;
+        .about-teaser-content h2 {
             font-family: var(--font-heading);
+            font-size: clamp(2.4rem, 4vw, 3.4rem);
+            color: var(--dark-plum);
+            margin: 16px 0 20px;
             font-weight: 700;
+            line-height: 1.15;
         }
 
-        .feature-card p {
+        .about-teaser-content p {
             color: var(--plum-body);
-            font-size: 0.95rem;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 28px;
             font-family: var(--font-body);
+        }
+
+        @media (max-width: 900px) {
+            .about-teaser-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+
+        /* ==========================================================================
+           CONTACT TEASER (homepage closing CTA)
+           ========================================================================== */
+        .home-contact-teaser {
+            background: var(--pink-soft);
         }
 
         .about-section {
@@ -1452,42 +1520,6 @@
 
         .highlight-item i {
             color: var(--pink-vibrant);
-        }
-
-        /* CTA BANNER */
-        .cta-section {
-            background: linear-gradient(135deg, #FF2A85 0%, #D81B60 100%);
-            color: var(--white);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 64px 32px;
-            border-radius: var(--radius-lg);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .cta-box h2 {
-            font-size: clamp(2.8rem, 4.6vw, 4rem);
-            margin-bottom: 16px;
-            font-family: var(--font-heading);
-            font-weight: 700;
-        }
-
-        .cta-box p {
-            font-size: 1.2rem;
-            margin-bottom: 32px;
-            opacity: 0.95;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            font-family: var(--font-body);
         }
 
         /* ==========================================================================
@@ -2253,9 +2285,6 @@
             .product-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
             .footer-grid {
                 grid-template-columns: 1fr 1fr;
             }
@@ -2584,6 +2613,25 @@
         </section>
 
         <!-- SHOP / PRODUCTS — main focus, directly after hero -->
+        <!-- FEATURED ACCESSORIES — bigger images, minimal clutter, comes before Lashes -->
+        <section class="section-padding featured-accessories-section">
+            <div class="container">
+                <div class="section-header reveal-up">
+                    <div class="pill-badge">Curated For You</div>
+                    <h2>Featured Accessories</h2>
+                    <p>Statement pieces to complete your everyday glam.</p>
+                </div>
+
+                <div class="featured-accessories-grid" id="featuredAccessoriesGrid"></div>
+
+                <div style="text-align: center; margin-top: 48px;">
+                    <a onclick="switchPage('accessories')" class="btn btn-secondary">
+                        View All Accessories <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <section class="section-padding bestsellers-section">
             <div class="container">
                 <div class="section-header reveal-up">
@@ -2614,55 +2662,38 @@
             </div>
         </section>
 
-        <section class="section-padding beauty-features">
-            <div class="container">
-                <div class="section-header reveal-up">
-                    <div class="pill-badge">Studio Quality Care</div>
-                    <h2>Featured Beauty Essentials</h2>
-                    <p>Everything you need to keep your lashes lush, clean, and lasting for weeks.</p>
+        <!-- ABOUT / BRAND TEASER -->
+        <section class="section-padding home-about-teaser">
+            <div class="container about-teaser-grid">
+                <div class="about-teaser-image reveal-up">
+                    <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80" alt="Shine By Rex Studio">
                 </div>
-
-                <div class="feature-grid">
-                    <div class="feature-card reveal-up">
-                        <div class="feature-icon-box">
-                            <i data-lucide="sparkle" style="width: 36px; height: 36px;"></i>
-                        </div>
-                        <h3>Lash Retention Serum</h3>
-                        <p>Infused with peptide complexes to strengthen natural lashes and prolong lash extension retention by up to 2 weeks.</p>
-                    </div>
-
-                    <div class="feature-card reveal-up">
-                        <div class="feature-icon-box">
-                            <i data-lucide="droplet" style="width: 36px; height: 36px;"></i>
-                        </div>
-                        <h3>Rose Foam Cleanser</h3>
-                        <p>Oil-free lash shampoo formulation designed to gently cleanse oils and residue without weakening lash glue bonding.</p>
-                    </div>
-
-                    <div class="feature-card reveal-up">
-                        <div class="feature-icon-box">
-                            <i data-lucide="wand-2" style="width: 36px; height: 36px;"></i>
-                        </div>
-                        <h3>Precision Applicator Kit</h3>
-                        <p>Ergonomic curved gold tweezers and precision mini wands crafted for seamless strip lash application every time.</p>
-                    </div>
+                <div class="about-teaser-content reveal-up">
+                    <div class="pill-badge">The Rex Promise</div>
+                    <h2>Crafted For Women Who Love To Stand Out.</h2>
+                    <p>At SHINE BY REX, we believe luxury lashes aren't just an accessory—they're your confidence power-up. Founded by master lash artist Rex, our brand combines studio expertise with effortless glam designed for modern beauty lovers.</p>
+                    <a onclick="switchPage('about')" class="btn btn-secondary">
+                        Learn Our Story <i data-lucide="arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <section class="section-padding cta-section">
+        <!-- CONTACT TEASER / CLOSING CTA -->
+        <section class="section-padding home-contact-teaser">
             <div class="container">
-                <div class="cta-box reveal-up">
-                    <h2>Ready To Elevate Your Lash Game?</h2>
-                    <p>Order your handcrafted lashes today or book an exclusive 1-on-1 glam lash set at our studio location.</p>
-                    <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                        <a onclick="switchPage('lashes')" class="btn btn-secondary">
-                            Browse Lash Shop
-                        </a>
-                        <button onclick="openBookingModal()" class="btn btn-primary" style="background: var(--dark-plum);">
-                            Book Appointment Now
-                        </button>
-                    </div>
+                <div class="section-header reveal-up" style="margin-bottom: 40px;">
+                    <div class="pill-badge">Let's Connect</div>
+                    <h2>Ready When You Are.</h2>
+                    <p>Reach out for bookings, product questions, or just to say hi — we're one tap away.</p>
+                </div>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#" onclick="openWhatsAppChat(); return false;" class="btn btn-primary">
+                        WhatsApp Us <i data-lucide="message-circle"></i>
+                    </a>
+                    <button onclick="openBookingModal()" class="btn btn-secondary">
+                        Book Appointment
+                    </button>
                 </div>
             </div>
         </section>
@@ -3302,6 +3333,28 @@
             const bar = document.getElementById('bestsellersBar');
             if (!bar) return;
             renderLashesInto(bar, LASHES.filter(p => p.featured));
+        }
+
+        // RENDER FEATURED ACCESSORIES (homepage teaser — large image, minimal text)
+        function renderFeaturedAccessories() {
+            const grid = document.getElementById('featuredAccessoriesGrid');
+            if (!grid) return;
+
+            const featuredNames = ['Jewelry box', 'Classic tote bag', 'Faux flower', 'claw clip'];
+            const items = featuredNames.map(name => ACCESSORIES.find(p => p.name === name)).filter(Boolean);
+
+            grid.innerHTML = items.map(item => `
+                <div class="featured-accessory-card reveal-up" onclick="openProductDetail('${item.name.replace(/'/g, "\\'")}')">
+                    <div class="featured-accessory-img">
+                        <img src="${item.img}" alt="${item.name}">
+                    </div>
+                    <div class="featured-accessory-name">${item.name}</div>
+                    <div class="featured-accessory-price">₦${item.price.toFixed(2)}</div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+            observeRevealElements(grid);
         }
 
         // Shared card-template renderer used by both the Lashes grid and the Bestsellers bar
@@ -4211,6 +4264,7 @@
             renderAccessories(ACCESSORIES);
             renderLashes(LASHES);
             renderBestsellersBar();
+            renderFeaturedAccessories();
             observeProductCards();
             applyCategoryLabels();
             observeRevealElements();
